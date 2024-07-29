@@ -1,11 +1,17 @@
 package com.ptu.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ptu.mall.domain.dto.PageQueryDTO;
 import com.ptu.mall.domain.po.Banner;
+import com.ptu.mall.domain.vo.BannerVO;
 import com.ptu.mall.mapper.BannerMapper;
 import com.ptu.mall.service.IBannerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,6 +24,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> implements IBannerService {
-    private final BannerMapper bannerMapper;
-
+    @Override
+    public List<BannerVO> getList(PageQueryDTO queryDTO) {
+        Page<Banner> page = page(Page.of(queryDTO.getPageNum(), queryDTO.getPageSize()));
+        List<Banner> records = page.getRecords();
+        return BeanUtil.copyToList(records, BannerVO.class);
+    }
 }

@@ -1,7 +1,11 @@
 package com.ptu.mall.service;
 
+import com.ptu.mall.domain.dto.PageQueryDTO;
 import com.ptu.mall.domain.po.Banner;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ptu.mall.domain.vo.BannerVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +18,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IBannerService extends IService<Banner> {
 
 
+    List<BannerVO> getList(PageQueryDTO queryDTO);
 }

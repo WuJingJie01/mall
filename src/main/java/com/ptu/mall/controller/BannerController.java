@@ -1,14 +1,17 @@
 package com.ptu.mall.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
+import com.ptu.mall.domain.dto.BannerInsertDTO;
+import com.ptu.mall.domain.dto.PageQueryDTO;
 import com.ptu.mall.domain.po.Banner;
+import com.ptu.mall.domain.vo.BannerVO;
+import com.ptu.mall.domain.vo.ResponseResult;
 import com.ptu.mall.service.IBannerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -24,5 +27,51 @@ import org.springframework.web.bind.annotation.RestController;
 public class BannerController {
     private final IBannerService bannerService;
 
+    @GetMapping("/list")
+    public ResponseResult pageQuery(PageQueryDTO queryDTO) {
+        List<BannerVO> bannerVOList = bannerService.getList(queryDTO);
+        return ResponseResult.okResult(bannerVOList);
+    }
 
+    @GetMapping("/admin/{id}")
+    public ResponseResult getById(@PathVariable Integer id) {
+        Banner banner = bannerService.getById(id);
+        if (banner == null) {
+            return ResponseResult.failResult("查询失败");
+        }
+        BannerVO bannerVO = BeanUtil.copyProperties(banner, BannerVO.class);
+        return ResponseResult.okResult(bannerVO);
+    }
+
+    @PostMapping("/admin/insert")
+    public ResponseResult insert(@RequestBody BannerInsertDTO insertDTO) {
+        Banner banner = BeanUtil.copyProperties(insertDTO, Banner.class);
+        boolean flag = bannerService.save(banner);
+        if (flag) {
+            return ResponseResult.okResult();
+        }
+        return ResponseResult.failResult("添加失败");
+    }
+
+    @PostMapping("/admin/update")
+    public ResponseResult update(@RequestParam Integer id, @RequestParam String description) {
+        Banner banner = Banner.builder()
+                .id(id)
+                .description(description)
+                .build();
+        boolean flag = bannerService.updateById(banner);
+        if (flag) {
+            return ResponseResult.okResult();
+        }
+        return ResponseResult.failResult("更新失败");
+    }
+
+    @PostMapping("/admin/delete")
+    public ResponseResult deleteByIds(@RequestBody List<Integer> ids) {
+        boolean flag = bannerService.removeBatchByIds(ids);
+        if (flag) {
+            return ResponseResult.okResult();
+        }
+        return ResponseResult.failResult("删除失败");
+    }
 }
