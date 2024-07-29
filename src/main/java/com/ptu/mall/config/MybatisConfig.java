@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MybatisConfig {
-
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         // 初始化核心插件
