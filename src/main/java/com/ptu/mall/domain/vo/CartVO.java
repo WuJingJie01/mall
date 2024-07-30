@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 public class CartVO implements Serializable {
@@ -20,5 +21,5 @@ public class CartVO implements Serializable {
     @ApiModelProperty(value = "商品图片")
     private String img;
     @ApiModelProperty(value = "商品价格")
-    private Integer price;
+    private BigDecimal price;
 }

@@ -1,6 +1,6 @@
 package com.ptu.mall.config;
 
-import com.ptu.mall.interceptors.LoginInterceptor;
+import com.ptu.mall.constants.PathConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,6 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+
 
 @Configuration
 @EnableSwagger2
@@ -60,6 +61,10 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
         // 处理 static 目录下的静态资源
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
+
+        // 文件资源路径
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:" + PathConstants.FILE_UPLOAD_PATH);
     }
 
     @Override
@@ -67,5 +72,6 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
         // 添加登录拦截器
 //        registry.addInterceptor(new LoginInterceptor())
 //                .addPathPatterns("/**/admin/**");
+
     }
 }

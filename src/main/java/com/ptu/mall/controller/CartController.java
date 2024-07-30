@@ -1,9 +1,7 @@
 package com.ptu.mall.controller;
 
 
-import cn.hutool.core.util.StrUtil;
 import com.ptu.mall.domain.dto.CartPageDTO;
-import com.ptu.mall.domain.po.Cart;
 import com.ptu.mall.domain.vo.CartVO;
 import com.ptu.mall.domain.vo.ResponseResult;
 import com.ptu.mall.service.ICartService;
