@@ -64,8 +64,8 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println("添加登录拦截器");
-        registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/**/admin/**");
+        // 添加登录拦截器
+//        registry.addInterceptor(new LoginInterceptor())
+//                .addPathPatterns("/**/admin/**");
     }
 }

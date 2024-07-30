@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ptu.mall.domain.dto.CategoryDTO;
 import com.ptu.mall.domain.dto.CategoryUpdateDTO;
 import com.ptu.mall.domain.dto.PageQueryDTO;
-import com.ptu.mall.domain.po.Cart;
 import com.ptu.mall.domain.po.Category;
 import com.ptu.mall.domain.vo.CategoryVO;
 import com.ptu.mall.mapper.CategoryMapper;
