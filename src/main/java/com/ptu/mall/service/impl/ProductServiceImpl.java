@@ -1,8 +1,10 @@
 package com.ptu.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ptu.mall.domain.dto.ProductDTO;
 import com.ptu.mall.domain.dto.ProductPageQueryDTO;
 import com.ptu.mall.domain.po.Product;
 import com.ptu.mall.domain.vo.ProductVO;
@@ -45,9 +47,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
-    public ResponseResult add(Product product) {
+    public ResponseResult add(ProductDTO productDTO) {
         // 判断数据库是否存在该商品编码
-        String code = product.getCode();
+        String code = productDTO.getCode();
         if (StrUtil.isBlank(code)) {
             return ResponseResult.failResult("商品编码为空");
         }
@@ -55,6 +57,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (count != 0) {
             return ResponseResult.failResult(501, "商品编码已存在，新增失败");
         }
+
+        Product product = BeanUtil.copyProperties(productDTO, Product.class);
         boolean isSave = save(product);
 
         if (isSave) {
@@ -63,4 +67,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         return ResponseResult.failResult();
     }
+
+    @Override
+    public boolean updateProduct(ProductDTO productDTO) {
+        Product product = BeanUtil.copyProperties(productDTO, Product.class);
+        return updateById(product);
+    }
+
 }

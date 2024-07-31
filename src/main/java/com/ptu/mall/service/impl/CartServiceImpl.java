@@ -52,7 +52,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
                 .eq(Cart::getUserId, userId).one();
 
         if (cart == null) {
-            // 插入商品
+            // 不存在，插入商品
             Cart build = Cart.builder()
                     .prodId(prodId)
                     .num(num)
@@ -66,7 +66,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
         }
 
         // 更新
-        cart.setNum(num);
+        cart.setNum(num + cart.getNum());
         boolean flag = updateById(cart);
         if (flag) {
             return ResponseResult.okResult("更新一条购物车记录");

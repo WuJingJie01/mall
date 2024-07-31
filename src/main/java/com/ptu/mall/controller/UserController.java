@@ -35,8 +35,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
     private final IUserService userService;
+    private final HttpSession httpSession;
     @PostMapping("/login")
-    public ResponseResult login(UserDTO userDTO, HttpSession httpSession) {
+    public ResponseResult login(UserDTO userDTO) {
         // 空判断
         if (StrUtil.isBlank(userDTO.getPhone())) {
             return ResponseResult.failResult("手机号不能为空");
@@ -73,7 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/reg")
-    public ResponseResult reg(UserRegDTO userRegDTO, HttpSession session) {
+    public ResponseResult reg(UserRegDTO userRegDTO) {
         // 判空
         if (StrUtil.isEmpty(userRegDTO.getPhone())) {
             return ResponseResult.failResult("手机号不能为空");
@@ -99,7 +100,7 @@ public class UserController {
         }
 
         // 判断验证码
-        String verifyCode = session.getAttribute("verifyCode").toString();
+        String verifyCode = httpSession.getAttribute("verifyCode").toString();
         if (!userRegDTO.getVerifyCode().toLowerCase().equals(verifyCode)) {
             return ResponseResult.failResult("验证码错误");
         }
@@ -128,14 +129,14 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseResult logout(HttpSession session) {
-        session.removeAttribute("userId");
+    public ResponseResult logout() {
+        httpSession.removeAttribute("userId");
         return ResponseResult.okResult();
     }
 
     @GetMapping("/isLogin")
-    public ResponseResult isLogin(HttpSession session) {
-        Object userId = session.getAttribute("userId");
+    public ResponseResult isLogin() {
+        Object userId = httpSession.getAttribute("userId");
         if (userId == null) {
             return ResponseResult.failResult("未登录");
         }

@@ -25,6 +25,6 @@ public interface ICategoryService extends IService<Category> {
 
     boolean add(CategoryDTO categoryDTO);
 
-    boolean updateCategory(CategoryUpdateDTO updateDTO);
+    boolean updateCategory(Integer id, String name);
 
 }

@@ -1,6 +1,7 @@
 package com.ptu.mall.config;
 
 import com.ptu.mall.constants.PathConstants;
+import com.ptu.mall.interceptors.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -69,9 +70,8 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 添加登录拦截器
-//        registry.addInterceptor(new LoginInterceptor())
-//                .addPathPatterns("/**/admin/**");
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/**/admin/**");
 
     }
 }

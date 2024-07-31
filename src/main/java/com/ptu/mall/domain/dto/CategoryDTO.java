@@ -10,6 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class CategoryDTO implements Serializable {
+    Integer id;
     String code;
     String name;
 }

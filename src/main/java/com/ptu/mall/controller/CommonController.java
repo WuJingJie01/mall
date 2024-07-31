@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 import static com.ptu.mall.constants.PathConstants.FILE_UPLOAD_PATH;
 
-@Controller
+@RestController
 @RequestMapping("/common")
 public class CommonController {
 
@@ -61,7 +62,6 @@ public class CommonController {
     }
 
     @PostMapping("/uploadfile")
-    @ResponseBody
     public ResponseResult uploadFile(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ResponseResult.failResult("文件不能为空");

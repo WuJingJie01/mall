@@ -44,8 +44,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public boolean updateCategory(CategoryUpdateDTO updateDTO) {
-        Category category = BeanUtil.copyProperties(updateDTO, Category.class);
+    public boolean updateCategory(Integer id, String name) {
+        Category category = Category.builder()
+                .id(id)
+                .name(name)
+                .build();
         return updateById(category);
     }
 

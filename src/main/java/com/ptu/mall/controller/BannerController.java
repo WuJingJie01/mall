@@ -2,7 +2,7 @@ package com.ptu.mall.controller;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import com.ptu.mall.domain.dto.BannerInsertDTO;
+import com.ptu.mall.domain.dto.BannerDTO;
 import com.ptu.mall.domain.dto.PageQueryDTO;
 import com.ptu.mall.domain.po.Banner;
 import com.ptu.mall.domain.vo.BannerVO;
@@ -44,9 +44,9 @@ public class BannerController {
     }
 
     @PostMapping("/admin/insert")
-    public ResponseResult insert(@RequestBody BannerInsertDTO insertDTO) {
-        Banner banner = BeanUtil.copyProperties(insertDTO, Banner.class);
-        boolean flag = bannerService.save(banner);
+    public ResponseResult insert(@RequestBody BannerDTO bannerDTO) {
+        boolean flag = bannerService.saveBanner(bannerDTO);
+
         if (flag) {
             return ResponseResult.okResult();
         }
@@ -54,12 +54,11 @@ public class BannerController {
     }
 
     @PostMapping("/admin/update")
-    public ResponseResult update(@RequestParam Integer id, @RequestParam String description) {
-        Banner banner = Banner.builder()
-                .id(id)
-                .description(description)
-                .build();
-        boolean flag = bannerService.updateById(banner);
+    public ResponseResult update(@RequestBody BannerDTO bannerDTO) {
+        if (bannerDTO.getId() == null) {
+            return ResponseResult.failResult("id不能为空");
+        }
+        boolean flag = bannerService.updateBanner(bannerDTO);
         if (flag) {
             return ResponseResult.okResult();
         }

@@ -51,11 +51,12 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/update")
-    public ResponseResult update(@RequestBody CategoryUpdateDTO updateDTO) {
-        if (updateDTO.getId() == null) {
-            return ResponseResult.failResult("id为空");
+    public ResponseResult update(@RequestParam Integer id,
+                                 @RequestParam String name) {
+        if (id == null) {
+            return ResponseResult.failResult("id不能为空");
         }
-        boolean flag = categoryService.updateCategory(updateDTO);
+        boolean flag = categoryService.updateCategory(id, name);
         if (flag) {
             return ResponseResult.okResult();
         }

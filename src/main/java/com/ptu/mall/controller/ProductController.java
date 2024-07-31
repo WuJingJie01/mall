@@ -1,6 +1,7 @@
 package com.ptu.mall.controller;
 
 
+import com.ptu.mall.domain.dto.ProductDTO;
 import com.ptu.mall.domain.dto.ProductPageQueryDTO;
 import com.ptu.mall.domain.po.Product;
 import com.ptu.mall.domain.vo.ProductVO;
@@ -36,13 +37,15 @@ public class ProductController {
     }
 
     @PostMapping("/admin/insert")
-    public ResponseResult add(@RequestBody Product product) {
-        return productService.add(product);
+    public ResponseResult add(@RequestBody ProductDTO productDTO) {
+        // TODO：入参要改，等申耀枫的前端说一下他要什么数据
+        return productService.add(productDTO);
     }
 
     @PostMapping("/admin/update")
-    public ResponseResult update(@RequestBody Product product) {
-        boolean isUpdated = productService.updateById(product);
+    public ResponseResult update(@RequestBody ProductDTO productDTO) {
+        // TODO：入参要改，等申耀枫的前端说一下他要什么数据
+        boolean isUpdated = productService.updateProduct(productDTO);
         if (isUpdated) {
             return ResponseResult.okResult();
         }

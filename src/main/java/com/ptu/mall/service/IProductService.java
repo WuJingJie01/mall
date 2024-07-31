@@ -1,5 +1,6 @@
 package com.ptu.mall.service;
 
+import com.ptu.mall.domain.dto.ProductDTO;
 import com.ptu.mall.domain.dto.ProductPageQueryDTO;
 import com.ptu.mall.domain.po.Product;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -22,5 +23,7 @@ public interface IProductService extends IService<Product> {
 
     ProductVO getProductById(Integer id);
 
-    ResponseResult add(Product product);
+    ResponseResult add(ProductDTO productDTO);
+
+    boolean updateProduct(ProductDTO productDTO);
 }
