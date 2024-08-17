@@ -28,17 +28,21 @@
                             <input type="password" class="form-control" id="password">
                         </div>
                         <div class="mb-3">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="password2">
+                        </div>
+                        <div class="mb-3">
                             <label for="verifyCode" class="form-label">Captcha</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="verifyCode">
+<!--                                <img src="/common/captcha" alt="captcha">-->
+<!--                                <img id="captcha" src="/common/captcha" alt="captcha">-->
                                 <span class="input-group-append">
                                     <img id="captcha" src="/common/captcha" alt="captcha" onclick="$(`#captcha`).attr('src','/common/captcha')">
                                 </span>
-
                             </div>
                         </div>
-<!--                        <a href="/register.html" class="btn btn-secondary">注册</a>-->
-                        <button type="submit" class="btn btn-primary">登录</button>
+                        <button type="submit" class="btn btn-primary">确认</button>
                     </form>
                 </div>
             </div>
@@ -50,16 +54,17 @@
         $("form").submit(function (e){
             e.preventDefault();   //阻止默认行为会跳转
             $.ajax({
-                url:'/user/login',
+                url:'/user/reg',
                 type:'post',
                 dtat:{
                     phone:$('#phone').val(),
                     password:$('#password').val(),
+                    password2:$('#password2').val(),
                     verifyCode:$('#verifyCode').val()
                 },
                 success:function (data){
                     if(data.code == 200){
-                        window.location.href = "/admin.html";
+                        window.location.href = "/login.html";
                     }else{
                         alert(data.message)
                     }

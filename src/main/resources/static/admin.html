@@ -238,8 +238,11 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="img" class="col-form-label">商品图片</label>
-                        <input type="text" class="form-control" id="img">
+                        <label for="imgUpload" class="form-label">商品图片</label>
+                        <div id="img" class="input-group">
+                            <input class="form-control" type="file" id="imgUpload" onchange="uploadFile()">
+                            <img src="" id="imgPreview" alt="商品预览" class="img-thumbnail">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -255,6 +258,24 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
+
+    function uploadFile(){
+        const file = $(`#imgUpload`)[0].files[0];
+        const formData = new FormData();
+        formData.append('file',file)
+        $.ajax({
+            url:'/common/uploadfile',
+            type:'post',
+            data:formData,
+            contentType:false,
+            processData:false,
+            success:function (res) {
+                $(`#imgPreview`).attr('src',res.data)
+                $(`#img`).val(res.data)
+            }
+        });
+    }
+
     //商品列表
     function listProduct(){
         $.ajax({
@@ -402,7 +423,7 @@
                 $('#stocks').val(prod.stocks),
                 $('#description').val(prod.description),
                 $('#categoryId').val(prod.categoryId),
-                $('#img').val(prod.img)
+                $('#imgPreview').attr('src'.prod.img)
             }
         });
     }
@@ -441,13 +462,15 @@
 
     //清空表单
     function clearModal(){
-        $('#title').val(''),
-        $('#code').val(''),
-        $('#price').val(''),
-        $('#stocks').val(''),
-        $('#description').val(''),
-        $('#categoryId').val(''),
-        $('#img').val('')
+        $('#title').val('');
+        $('#code').val('');
+        $('#price').val('');
+        $('#stocks').val('');
+        $('#description').val('');
+        $('#categoryId').val('');
+        $('#img').val('');
+        $('#imgUpload').val('');
+        $('#imgPreview').val('');
     }
 
     //初始化
@@ -503,7 +526,7 @@
                     submitBth.text('编辑')
                     const id = button.getAttribute('data-bs-prod-id')
                     submitBth.off('click').on('click',{id:id} ,editProuct())
-
+                    clearModal()
                     getProduct(id);
                 }
             })
