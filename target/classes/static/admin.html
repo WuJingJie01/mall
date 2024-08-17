@@ -153,16 +153,10 @@
         </ul>
         <hr>
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>mdo</strong>
+            <a di="loginUser" href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li><a class="dropdown-item" href="#" onclick="logout()">登出</a></li>
             </ul>
         </div>
     </div>
@@ -218,18 +212,40 @@
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Recipient:</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label for="title" class="col-form-label">商品名称</label>
+                        <input type="text" class="form-control" id="title">
                     </div>
                     <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <label for="code" class="col-form-label">商品编码</label>
+                        <input type="text" class="form-control" id="code">
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">商品价格</label>
+                        <input type="number" class="form-control" id="price">
+                    </div>
+                    <div class="mb-3">
+                        <label for="stocks" class="col-form-label">商品库存</label>
+                        <input type="number" class="form-control" id="stocks">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">商品描述</label>
+                        <textarea class="form-control" id="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoryId" class="col-form-label">商品分类</label>
+                        <select class="form-select" id="categoryId">
+                            <option selected>选择分类</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="img" class="col-form-label">商品图片</label>
+                        <input type="text" class="form-control" id="img">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" id="submit">Save</button>
             </div>
         </div>
     </div>
@@ -239,6 +255,201 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
+    //商品列表
+    function listProduct(){
+        $.ajax({
+            url:'/product/list',
+            type:'get',
+            dataType:'json',
+            success:function (res) {
+                console.log(res)
+                //res.data
+                res.data.forEach(prod =>{
+                    const  row=
+                        `<tr>
+                            <th scope="row">${prod.id}</th>
+                            <td>${prod.title}</td>
+                            <td>${prod.price}</td>
+                            <td>${prod.stocks}</td>
+                            <td>${prod.description}</td>
+                            <td>${prod.categoryName}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-primary"  data-bs-toggle="modal" data-bs-target="#itemModal" data-bs-type="edit" data-bs-prod-id="${prod.id}">编辑</button>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="delProduct(${prod.id})">删除</button>
+                            </td>
+                        </tr>`
+                    ;
+                    $('#productMange tbody').append(row)
+                })
+            }
+        });
+    }
+
+    function addProuct(){
+        const product = {
+            title:$('#title').val(),
+            code:$('#code').val(),
+            price:$('#price').val(),
+            stocks:$('#stocks').val(),
+            description:$('#description').val(),
+            categoryId:$('#categoryId').val(),
+            img:$('#img').val()
+        };
+        $.ajax({
+            url:'/product/admin/insert',
+            type:'post',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            data:JSON.stringify(product),
+            success:function (res) {
+                console.log(res)
+                //res.data
+                if(res.code === 200){
+                    alert('添加成功')
+                    $('#itemModal').modal('hide')
+                    $('#productMange tbody').empty()
+                    listProduct()
+                }else{
+                    alert('添加失败')
+                }
+            }
+        });
+    }
+
+    function editProuct(event){
+        const id = event.data.id;
+        const product = {
+            title:$('#title').val(),
+            code:$('#code').val(),
+            price:$('#price').val(),
+            stocks:$('#stocks').val(),
+            description:$('#description').val(),
+            categoryId:$('#categoryId').val(),
+            img:$('#img').val()
+        };
+        $.ajax({
+            url:'/product/admin/update',
+            type:'post',
+            dataType:'json',
+            contentType:'application/json; charset=utf-8',
+            data:JSON.stringify(product),
+            success:function (res) {
+                console.log(res)
+                //res.data
+                if(res.code === 200){
+                    alert('修改成功')
+                    $('#itemModal').modal('hide')
+                    $('#productMange tbody').empty()
+                    listProduct()
+                }else{
+                    alert('修改失败')
+                }
+            }
+        });
+    }
+    function delProduct(id){
+        $.ajax({
+            url:'/product/admin/delete',
+            type:'get',
+            dataType:'json',
+            data:JSON.stringify([id]),
+            contentType:'application/json; charset=utf-8',
+            success:function (res) {
+                console.log(res)
+                //res.data
+                if(res.code === 200){
+                    alert('删除成功')
+                    $('#itemModal').modal('hide')
+                    $('#productMange tbody').empty()
+                    listProduct()
+                }else{
+                    alert('删除失败')
+                }
+            }
+        });
+    }
+
+    function listCategory(){
+        $.ajax({
+            url:'/category/list',
+            type:'get',
+            dataType:'json',
+            success:function (res) {
+                console.log(res)
+                //res.data
+                res.data.forEach(cat =>{
+                    const option = `
+                        <option value="${cat.id}">${cat.name}</option>>
+                    `;
+                    $('#categoryId').append(option)
+                })
+            }
+        });
+    }
+
+    function getProduct(id){
+        $.ajax({
+            url:'/product/admin/'+ id,
+            type:'get',
+            dataType:'json',
+            success:function (res) {
+                console.log(res)
+                //res.data
+                const prod = res.date;
+                $('#title').val(prod.title),
+                $('#code').val(prod.code),
+                $('#price').val(prod.price),
+                $('#stocks').val(prod.stocks),
+                $('#description').val(prod.description),
+                $('#categoryId').val(prod.categoryId),
+                $('#img').val(prod.img)
+            }
+        });
+    }
+
+    function getLoginUser(){
+        $.ajax({
+            url:'/user/isLogin',
+            type:'get',
+            dataType:'json',
+            success:function (res) {
+                console.log(res)
+                //res.data
+                const user = res.data
+                $('#loginUser').text(user.nickName)
+            }
+        });
+    }
+
+    function logout(){
+        $.ajax({
+            url:'/user/logout',
+            type:'get',
+            dataType:'json',
+            success:function (res) {
+                console.log(res)
+                //res.data
+                if(res.code === 200){
+                    alert('退出成功')
+                    window.location.href = '/login.html'
+                }else{
+                    alert('退出失败')
+                }
+            }
+        });
+    }
+
+    //清空表单
+    function clearModal(){
+        $('#title').val(''),
+        $('#code').val(''),
+        $('#price').val(''),
+        $('#stocks').val(''),
+        $('#description').val(''),
+        $('#categoryId').val(''),
+        $('#img').val('')
+    }
+
     //初始化
     $(function (){
         //侧边栏
@@ -266,38 +477,35 @@
         $('.nav-link')[3].classList.add('active');
         $('.page')[3].style.display = 'block';
 
+//用户登录
+        getLoginUser()
         //商品管理
-        $.ajax({
-            url:'/product/list',
-            type:'get',
-            dataType:'json',
-            success:function (res) {
-                console.log(res)
-                //res.data
-                res.data.forEach(prod =>{
-                    const  row=
-                        `<tr>
-                            <th scope="row">${prod.id}</th>
-                            <td>${prod.title}</td>
-                            <td>${prod.price}</td>
-                            <td>${prod.stocks}</td>
-                            <td>${prod.description}</td>
-                            <td>${prod.categoryName}</td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-primary"  data-bs-toggle="modal" data-bs-target="#itemModal" data-bs-type="edit">编辑</button>
-                                <button type="button" class="btn btn-sm btn-danger">删除</button>
-                            </td>
-                        </tr>`
-                    ;
-                    $('#productMange tbody').append(row)
-                })
-            }
-        });
+        listProduct()
+        //商品分类
+        listCategory
         //modal显示事件监听器
         const itemModal = document.querySelector('#itemModal');
         if(itemModal){
-            itemModal.addEventListener("show.bs.modal",function (){
+            itemModal.addEventListener("show.bs.modal",function (e){
+                const button = e.relatedTarget;
+                const type = button.getAttribute('data-bs-type');
 
+                const modalTitle = $('#itemModalLabel');
+                const submitBth = $('#submit');
+
+                if(type === 'add'){
+                    modalTitle.text('添加商品');
+                    submitBth.text('添加')
+                    submitBth.off('click').on('click',addProuct)
+                    clearModal()
+                }else if(tyoe === 'edit'){
+                    modalTitle.text('编辑商品');
+                    submitBth.text('编辑')
+                    const id = button.getAttribute('data-bs-prod-id')
+                    submitBth.off('click').on('click',{id:id} ,editProuct())
+
+                    getProduct(id);
+                }
             })
         }
     })

@@ -31,12 +31,14 @@
                             <label for="verifyCode" class="form-label">Captcha</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="verifyCode">
+<!--                                <img src="/common/captcha" alt="captcha">-->
+<!--                                <img id="captcha" src="/common/captcha" alt="captcha">-->
                                 <span class="input-group-append">
                                     <img id="captcha" src="/common/captcha" alt="captcha" onclick="$(`#captcha`).attr('src','/common/captcha')">
                                 </span>
-
                             </div>
                         </div>
+                        <a href="/register.html" class="btn btn-secondary">注册</a>
                         <button type="submit" class="btn btn-primary">登录</button>
                     </form>
                 </div>
