@@ -4,10 +4,8 @@ import com.ptu.mall.domain.vo.ResponseResult;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.base.Captcha;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.ptu.mall.constants.PathConstants.FILE_UPLOAD_PATH;
 
 @RestController
 @RequestMapping("/common")
@@ -63,21 +61,27 @@ public class CommonController {
 
     @PostMapping("/uploadfile")
     public ResponseResult uploadFile(MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             return ResponseResult.failResult("文件不能为空");
         }
-        File dir = new File(FILE_UPLOAD_PATH);
-        if (!dir.exists() && !dir.isDirectory()) {
-            // 若不存在该目录，就创建一个
-            dir.mkdirs();
+        String resourcesPath = new File(ClassLoader.getSystemResource("").getPath()).getAbsolutePath();
+
+        // 定义upload目录路径
+        String uploadDirPath = resourcesPath + File.separator + "upload";
+
+        // 创建upload目录（如果不存在）
+        File uploadDir = new File(uploadDirPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String oldName = file.getOriginalFilename();
-        int index = oldName.lastIndexOf('.');
-        String suffix = oldName.substring(index);
-        String newName = UUID.randomUUID() + "-" + sdf.format(new Date()) + suffix;
-        file.transferTo(new File(FILE_UPLOAD_PATH + newName));
-        String forePortPath = "http://localhost:8080/upload/" + newName;
+        // 定义文件路径
+        String originalFilename = file.getOriginalFilename();
+        int index = originalFilename.lastIndexOf('.');
+        String suffix = originalFilename.substring(index);
+        String fileName = UUID.randomUUID() + suffix;
+        File newFile = new File(uploadDirPath + File.separator + fileName);
+        file.transferTo(newFile);
+        String forePortPath = "http://localhost:8080/upload/" + fileName;
         ResponseResult result = ResponseResult.okResult();
         result.setData(forePortPath);
         return result;

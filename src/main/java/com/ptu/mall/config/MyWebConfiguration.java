@@ -1,6 +1,5 @@
 package com.ptu.mall.config;
 
-import com.ptu.mall.constants.PathConstants;
 import com.ptu.mall.interceptors.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,14 +62,14 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
 
-        // 文件资源路径
+        // 处理upload目录下的静态资源
         registry.addResourceHandler("/upload/**")
-                .addResourceLocations("file:" + PathConstants.FILE_UPLOAD_PATH);
+                .addResourceLocations("classpath:/upload/");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/**/admin/**");
+//        registry.addInterceptor(new LoginInterceptor())
+//                .addPathPatterns("/**/admin/**");
     }
 }
