@@ -41,7 +41,7 @@ public class CartController {
         return ResponseResult.okResult(cart);
     }
 
-    @PostMapping("/admin/insertOrUpdate")
+        @PostMapping("/admin/insertOrUpdate")
     public ResponseResult add(@RequestParam(required = false) Integer prodId,
                               @RequestParam(required = false) Integer num,
                               @RequestParam(required = false) Integer userId) {

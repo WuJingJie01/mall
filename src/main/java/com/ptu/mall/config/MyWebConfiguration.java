@@ -24,7 +24,7 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
             	// 分组的名称
-                .groupName("吴晶杰完成的接口")
+                .groupName("后端接口文档")
                 .select()
                 // 匹配这个包里的接口
                 .apis(RequestHandlerSelectors.basePackage("com.ptu.mall.controller"))
@@ -33,12 +33,12 @@ public class MyWebConfiguration extends WebMvcConfigurationSupport {
 
     private ApiInfo apiInfo() {
         // 作者信息
-        Contact contact = new Contact("吴晶杰", "https://www.baidu.com", "213184213@qq.com");
+        Contact contact = new Contact("啦啦啦", "https://www.baidu.com", "神仙邮箱");
         return new ApiInfo(
             // 文档名称
             	"Ptu的暑假作业 - mall项目接口文档",
             // 描述
-                "由吴晶杰开发后端，申耀枫开发前端",
+                "ptu的商城大作业",
             // 版本号
                 "1.0",
             // 服务器地址
