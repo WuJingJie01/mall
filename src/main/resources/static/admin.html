@@ -371,7 +371,7 @@
     function delProduct(id){
         $.ajax({
             url:'/product/admin/delete',
-            type:'get',
+            type:'post',
             dataType:'json',
             data:JSON.stringify([id]),
             contentType:'application/json; charset=utf-8',
