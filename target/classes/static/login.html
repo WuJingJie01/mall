@@ -21,7 +21,7 @@
                 <form>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="email" class="form-control" id="phone" >
+                        <input type="text" class="form-control" id="phone" >
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
@@ -51,7 +51,7 @@
             $.ajax({
                 url:'/user/login',
                 type:'post',
-                dtat:{
+                data:{
                     phone:$('#phone').val(),
                     password:$('#password').val(),
                     verifyCode:$('#verifyCode').val()

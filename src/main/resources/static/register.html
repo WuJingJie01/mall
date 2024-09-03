@@ -17,13 +17,13 @@
     <div  class="row  h-100 justify-content-center align-items-center">
         <div class="card col-4">
             <div class="card-header">
-                登录
+                注册
             </div>
             <div class="card-body">
                 <form>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="email" class="form-control" id="phone" >
+                        <input type="text" class="form-control" id="phone" >
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
@@ -58,7 +58,7 @@
             $.ajax({
                 url:'/user/reg',
                 type:'post',
-                dtat:{
+                data:{
                     phone:$('#phone').val(),
                     password:$('#password').val(),
                     password2:$('#password2').val(),

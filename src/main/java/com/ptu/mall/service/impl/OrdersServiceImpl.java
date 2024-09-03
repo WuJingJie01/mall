@@ -33,4 +33,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         List<Orders> records = page.getRecords();
         return ResponseResult.okResult(records);
     }
+
+    @Override
+    public boolean finish(Integer id) {
+        return false;
+    }
 }

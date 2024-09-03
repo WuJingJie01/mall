@@ -15,4 +15,6 @@ import com.ptu.mall.domain.vo.ResponseResult;
 public interface IOrdersService extends IService<Orders> {
 
     ResponseResult pageQuery(Integer userId, Integer pageNum, Integer pageSize);
+
+    boolean finish(Integer id);
 }
