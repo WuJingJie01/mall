@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="前端课设" />
+        <module name="ptumallkeshe" />
         <module name="mall" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="mall" options="-parameters" />
+      <module name="ptumallkeshe" options="-parameters" />
       <module name="前端课设" options="-parameters" />
     </option>
   </component>
